@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Config (contains secrets)
+config.json
+
+# Uploads directory
+uploads/
+screenshots/
+
+# Database
+*.db
+*.sqlite
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Compiled binaries (should never be committed!)
+*.exe
+*.dll
+*.bin
+
+# Temporary files
+*.tmp
+*.temp

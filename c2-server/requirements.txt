@@ -1,0 +1,16 @@
+# C2 Server Dependencies
+# Educational RAT Project - Cybersecurity Engineering
+
+# Web Framework
+Flask==3.0.0
+Flask-CORS==4.0.0
+
+# Cryptography (AES-256-CBC, ECDH P-256)
+cryptography>=41.0.0
+
+# CLI Interface
+colorama==0.4.6
+tabulate==0.9.0
+
+# HTTP Client (for CLI)
+requests>=2.31.0

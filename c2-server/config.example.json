@@ -1,0 +1,7 @@
+{
+  "host": "0.0.0.0",
+  "port": 8080,
+  "debug": false,
+  "beacon_timeout": 30,
+  "log_file": "c2_server.log"
+}
