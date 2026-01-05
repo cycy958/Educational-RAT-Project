@@ -19,7 +19,9 @@
 
 ---
 
-## 📋 Project Overview
+## 🏗️ Architecture
+
+![Architecture](screenshots/architecture.png)
 
 This project demonstrates the development of a complete Command & Control (C2) infrastructure, including:
 
@@ -41,33 +43,53 @@ This project demonstrates the development of a complete Command & Control (C2) i
 
 ---
 
-## 🏗️ Architecture
+## 🖥️ C2 Console Interface
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         SYSTEM ARCHITECTURE                                  │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                              │
-│   VICTIM SIDE                              ATTACKER SIDE                     │
-│                                                                              │
-│   ┌─────────────┐    HTTPS:443    ┌──────────┐    HTTP     ┌─────────────┐  │
-│   │   IMPLANT   │ ──────────────► │  NGROK   │ ─────────► │  C2 SERVER  │  │
-│   │   (C++)     │                 │ (Tunnel) │            │  (Flask)    │  │
-│   │             │ ◄────────────── │          │ ◄───────── │             │  │
-│   └─────────────┘   AES-256-CBC   └──────────┘            └─────────────┘  │
-│         │                                                        │          │
-│         │                                                 ┌─────────────┐   │
-│   ┌─────────────┐                                         │  OPERATOR   │   │
-│   │  WATCHDOG   │ ◄── Mutual monitoring ──►               │   (CLI)     │   │
-│   │   (C++)     │                                         └─────────────┘   │
-│   └─────────────┘                                                           │
-│                                                                              │
-│   Cryptography: ECDH P-256 + AES-256-CBC + SHA-256                          │
-│   Communication: HTTPS via Ngrok tunnel                                     │
-│   Protocol: JSON over encrypted channel                                     │
-│                                                                              │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+![CLI Console](screenshots/cli-console.png)
+
+The operator console provides a user-friendly interface to manage connected implants, send commands, and retrieve results in real-time.
+
+---
+
+## 📊 Command Categories
+
+The implant supports **62 commands** organized into categories:
+
+![Commands Part 1](screenshots/commands-1.png)
+
+![Commands Part 2](screenshots/commands-2.png)
+
+| Category | Commands | Description |
+|----------|----------|-------------|
+| **System** | `shell`, `ps`, `sysinfo`, `osinfo`, `hwinfo` | System interaction |
+| **Keylogger** | `keylog_start`, `keylog_stop`, `keylog_dump` | Keystroke capture |
+| **Files** | `ls`, `cat`, `search`, `upload`, `download` | File operations |
+| **Credentials** | `browser_harvest`, `dump_wifi`, `dump_lsass` | Credential theft |
+| **Persistence** | `persist_install`, `com_install`, `wmi_install` | Survival mechanisms |
+| **Evasion** | `migrate`, `cleanup`, `timestomp`, `selfdestruct` | Anti-forensics |
+
+---
+
+## 🧩 Implant Modular Architecture
+
+![Implant Modules](screenshots/implant-modules.png)
+
+The C++ implant is built with a modular architecture, separating concerns into:
+- **Core Modules** - C2 communication, cryptography, shell execution
+- **Evasion Modules** - Anti-debug, sleep obfuscation, API unhooking
+- **Collection Modules** - Keylogger, screenshot, file transfer
+- **Persistence Modules** - Registry, WMI, COM hijacking, scheduled tasks
+
+---
+
+## 🔄 Watchdog System
+
+![Watchdog](screenshots/watchdog.png)
+
+The dual-process architecture ensures resilience:
+- **Main Implant** and **Watchdog** monitor each other via mutex
+- If one is killed, the other relaunches it within ~5 seconds
+- Process names rotate through legitimate Windows process names
 
 ---
 
@@ -113,7 +135,9 @@ This project demonstrates the development of a complete Command & Control (C2) i
 
 ## 🎯 MITRE ATT&CK Mapping
 
-This project implements techniques from the MITRE ATT&CK framework:
+![MITRE Coverage](screenshots/mitre-coverage.png)
+
+This project implements **28 techniques** across the MITRE ATT&CK framework:
 
 | Tactic | Technique | Implementation |
 |--------|-----------|----------------|
@@ -153,8 +177,10 @@ This project implements techniques from the MITRE ATT&CK framework:
 │   ├── 📄 logger.py          # Logging utilities
 │   └── 📄 requirements.txt   # Python dependencies
 │
-└── 📁 docs/                  # Documentation
-    └── 📄 MITRE_ATTACK.md    # Full ATT&CK mapping
+├── 📁 docs/                  # Documentation
+│   └── 📄 MITRE_ATTACK.md    # Full ATT&CK mapping
+│
+└── 📁 screenshots/           # Project screenshots
 ```
 
 ### NOT Published (intentionally)
@@ -192,21 +218,6 @@ python server.py
 
 ---
 
-## 📊 Command Categories
-
-The implant supports **62 commands** organized into categories:
-
-| Category | Commands | Description |
-|----------|----------|-------------|
-| **System** | `shell`, `ps`, `sysinfo`, `osinfo`, `hwinfo` | System interaction |
-| **Keylogger** | `keylog_start`, `keylog_stop`, `keylog_dump` | Keystroke capture |
-| **Files** | `ls`, `cat`, `search`, `upload`, `download` | File operations |
-| **Credentials** | `browser_harvest`, `dump_wifi`, `dump_lsass` | Credential theft |
-| **Persistence** | `persist_install`, `com_install`, `wmi_install` | Survival mechanisms |
-| **Evasion** | `migrate`, `cleanup`, `timestomp`, `selfdestruct` | Anti-forensics |
-
----
-
 ## 👤 Author
 
 **Cyril** - Cybersecurity Engineering Student
@@ -222,4 +233,4 @@ This project is licensed under the MIT License with Educational Use Clause - see
 
 ---
 
-"Know your enemy and know yourself, and you will never be defeated." - Sun Tzu
+*"Know your enemy and know yourself, and you will never be defeated."* - Sun Tzu
